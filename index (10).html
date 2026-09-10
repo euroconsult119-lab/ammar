@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ammar Alshalfi - Senior Architect</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;800&family=Syncopate:wght@400;700&family=Inter:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --bg-color: #020617;
+            --primary: #3b82f6;
+            --secondary: #0ea5e9;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: #ffffff;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Language Specific Fonts & Display Logic */
+        html[lang="en"] { font-family: 'Inter', sans-serif; }
+        html[lang="ar"] { font-family: 'Cairo', sans-serif; }
+        
+        html[lang="en"] .lang-ar { display: none !important; }
+        html[lang="ar"] .lang-en { display: none !important; }
+
+        html[lang="en"] .font-syncopate { font-family: 'Syncopate', sans-serif; }
+        html[lang="ar"] .font-syncopate { font-family: 'Cairo', sans-serif; font-weight: 800; }
+        
+        /* Blue Pulse Background */
+        .pulse-bg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70vw;
+            height: 70vh;
+            background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, rgba(14,165,233,0.05) 40%, transparent 70%);
+            filter: blur(90px);
+            z-index: -1;
+            animation: pulse-glow 6s infinite alternate ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes pulse-glow {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+        }
+
+        /* Floating Element Animations */
+        .float-anim { animation: float 6s ease-in-out infinite; }
+        .float-fast { animation: float 4s ease-in-out infinite 1s; }
+        .float-slow { animation: float 7s ease-in-out infinite 2s; }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+        }
+
+        .neon-text {
+            text-shadow: 0 0 10px rgba(59,130,246,0.6), 0 0 20px rgba(14,165,233,0.4);
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Modal Styles */
+        #projectModal {
+            transition: opacity 0.4s ease, visibility 0.4s;
+        }
+        #projectModal.hidden-modal {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+    </style>
+</head>
+<body class="antialiased selection:bg-blue-500 selection:text-white">
+
+    <!-- Background Video -->
+    <video autoplay loop muted playsinline style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -2; opacity: 0.15; mix-blend-mode: screen; pointer-events: none;">
+        <source src="amweb0.mp4" type="video/mp4">
+    </video>
+
+    <!-- Ambient Background -->
+    <div class="pulse-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass p-5 flex justify-between items-center transition-all border-b border-blue-900/30">
+        <div class="font-syncopate text-2xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-400">
+            AMMAR
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="hidden md:flex items-center gap-8 text-sm tracking-widest font-bold text-gray-300 mx-6">
+                <a href="#home" class="hover:text-blue-400 transition"><span class="lang-en">HOME</span><span class="lang-ar">الرئيسية</span></a>
+                <a href="#work" class="hover:text-blue-400 transition"><span class="lang-en">WORK</span><span class="lang-ar">الأعمال</span></a>
+                <a href="#contact" class="hover:text-blue-400 transition"><span class="lang-en">CONTACT</span><span class="lang-ar">تواصل</span></a>
+            </div>
+            <!-- Language Toggle Button -->
+            <button onclick="toggleLang()" class="px-5 py-2 rounded-full border border-blue-800 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-900/30 transition-all text-sm tracking-widest font-bold shadow-[0_0_10px_rgba(59,130,246,0.2)]">
+                <i class="fa-solid fa-globe ms-1 me-2"></i>
+                <span id="langText">عربي</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen relative flex items-center justify-center pt-24 px-6 overflow-hidden">
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center z-10">
+            
+            <!-- Text Content -->
+            <div class="hero-element text-center lg:text-start reveal active">
+                <h2 class="text-blue-400 tracking-[0.2em] md:tracking-[0.3em] text-xs md:text-sm mb-4 font-bold uppercase border border-blue-900/50 inline-block px-4 py-1 rounded-full glass">
+                    <span class="lang-en">Senior Architect | Project Manager</span>
+                    <span class="lang-ar">مهندس معماري أول | مدير مشاريع</span>
+                </h2>
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 font-syncopate uppercase neon-text leading-tight mt-4">
+                    <span class="lang-en">Ammar<br>Alshalfi</span>
+                    <span class="lang-ar">عمار<br>الشلفي</span>
+                </h1>
+                <p class="text-gray-300 text-base md:text-lg mb-10 max-w-lg leading-relaxed mx-auto lg:mx-0">
+                    <span class="lang-en">A professional engineering leader with 12+ years of experience in multidisciplinary design, technical coordination, and massive project delivery across Saudi Arabia and Yemen. Specializing in high-quality architectural solutions, value engineering, and seamless execution.</span>
+                    <span class="lang-ar">قائد هندسي محترف بخبرة تتجاوز 12 عاماً في التصميم متعدد التخصصات، والتنسيق الفني، وتسليم المشاريع الضخمة في المملكة العربية السعودية واليمن. متخصص في الحلول المعمارية عالية الجودة، الهندسة القيمية، والتنفيذ السلس.</span>
+                </p>
+                
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="https://drive.usercontent.google.com/download?id=1eKaamfiQzS28mS1cxdPZBR8NoMrn9n4W&export=download&authuser=0" target="_blank" class="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-bold transition-all shadow-[0_0_15px_rgba(59,130,246,0.4)] hover:shadow-[0_0_25px_rgba(59,130,246,0.6)] flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        <span class="lang-en">Download CV</span>
+                        <span class="lang-ar">تحميل السيرة الذاتية</span>
+                    </a>
+                    <a href="https://drive.google.com/file/d/1K5zXgkn8bmf3dKiD3Je2haXrQeXc5aEs/view" target="_blank" class="px-8 py-3 border-2 border-blue-600 text-blue-400 hover:bg-blue-900/30 rounded-full font-bold transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span class="lang-en">View Portfolio</span>
+                        <span class="lang-ar">استعراض البورتفوليو</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Profile Image & Vibrant Orbiting Icons -->
+            <div class="relative flex justify-center items-center hero-element mt-16 lg:mt-0 h-[400px] reveal active">
+                
+                <!-- Circular Profile Picture -->
+                <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full border-4 border-blue-500/30 shadow-[0_0_50px_rgba(59,130,246,0.3)] bg-gradient-to-tr from-blue-900/40 to-sky-600/20 p-1 z-10 flex items-center justify-center overflow-hidden glass">
+                    <img src="https://s6.imgcdn.dev/YJitVN.png" alt="Ammar Alshalfi" class="w-full h-full object-cover rounded-full relative z-20">
+                </div>
+
+                <!-- Floating Vibrant Icons -->
+                <div class="absolute top-4 left-1/4 float-fast glass w-14 h-14 rounded-full flex items-center justify-center text-red-500 text-2xl shadow-[0_0_15px_rgba(239,68,68,0.3)] border-red-500/30 z-20" title="AutoCAD">
+                    <i class="fa-solid fa-pen-ruler"></i>
+                </div>
+                
+                <div class="absolute top-1/4 -right-4 float-anim glass w-16 h-16 rounded-full flex items-center justify-center text-cyan-400 text-3xl shadow-[0_0_15px_rgba(34,211,238,0.3)] border-cyan-400/30 z-20" title="3D Max & Revit">
+                    <i class="fa-solid fa-cube"></i>
+                </div>
+                
+                <div class="absolute bottom-10 -right-2 float-slow glass w-14 h-14 rounded-full flex items-center justify-center text-blue-500 text-2xl shadow-[0_0_15px_rgba(59,130,246,0.3)] border-blue-500/30 z-20" title="Photoshop">
+                    <i class="fa-solid fa-image"></i>
+                </div>
+                
+                <div class="absolute bottom-0 left-1/3 float-anim glass w-12 h-12 rounded-full flex items-center justify-center text-green-400 text-xl shadow-[0_0_15px_rgba(74,222,128,0.3)] border-green-400/30 z-20" title="Lumion">
+                    <i class="fa-solid fa-leaf"></i>
+                </div>
+                
+                <div class="absolute bottom-1/4 -left-6 float-fast glass w-16 h-16 rounded-full flex items-center justify-center text-indigo-400 text-3xl shadow-[0_0_15px_rgba(129,140,248,0.3)] border-indigo-400/30 z-20" title="SketchUp">
+                    <i class="fa-solid fa-compass-drafting"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Grid Section -->
+    <section id="work" class="py-24 px-6 max-w-7xl mx-auto relative">
+        <div class="text-center mb-16 reveal">
+            <h2 class="text-blue-500 text-sm tracking-[0.3em] font-bold uppercase mb-2">
+                <span class="lang-en">Portfolio</span><span class="lang-ar">معرض الأعمال</span>
+            </h2>
+            <h3 class="text-4xl md:text-5xl font-bold font-syncopate neon-text">
+                <span class="lang-en">PROJECT SHOWCASE</span><span class="lang-ar">أبرز المشاريع</span>
+            </h3>
+        </div>
+        
+        <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Projects dynamically injected here -->
+        </div>
+    </section>
+
+    <!-- Footer / Contact -->
+    <footer id="contact" class="glass border-t border-blue-900/40 py-16 px-6 mt-10">
+        <div class="max-w-4xl mx-auto text-center reveal">
+            <h3 class="text-3xl font-bold font-syncopate mb-8 text-white uppercase">
+                <span class="lang-en">Let's Work Together</span>
+                <span class="lang-ar">لنتعاون معاً</span>
+            </h3>
+            
+            <div class="flex flex-wrap justify-center gap-8 mb-10">
+                <a href="mailto:alshalfi.ammar@gmail.com" class="flex flex-col items-center group text-gray-400 hover:text-blue-400 transition">
+                    <div class="w-16 h-16 rounded-full glass border border-blue-900/50 flex items-center justify-center text-2xl mb-3 group-hover:bg-blue-900/30 group-hover:border-blue-500 shadow-[0_0_15px_rgba(0,0,0,0)] group-hover:shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <span class="text-sm font-medium">alshalfi.ammar@gmail.com</span>
+                </a>
+                
+                <a href="tel:+966555606455" class="flex flex-col items-center group text-gray-400 hover:text-blue-400 transition" dir="ltr">
+                    <div class="w-16 h-16 rounded-full glass border border-blue-900/50 flex items-center justify-center text-2xl mb-3 group-hover:bg-blue-900/30 group-hover:border-blue-500 shadow-[0_0_15px_rgba(0,0,0,0)] group-hover:shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <span class="text-sm font-medium">+966 555 606 455</span>
+                </a>
+
+                <a href="https://www.linkedin.com/in/ammar-alshalfi" target="_blank" class="flex flex-col items-center group text-gray-400 hover:text-blue-400 transition">
+                    <div class="w-16 h-16 rounded-full glass border border-blue-900/50 flex items-center justify-center text-2xl mb-3 group-hover:bg-blue-900/30 group-hover:border-blue-500 shadow-[0_0_15px_rgba(0,0,0,0)] group-hover:shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all">
+                        <i class="fa-brands fa-linkedin-in text-blue-500 group-hover:text-blue-400"></i>
+                    </div>
+                    <span class="text-sm font-medium">LinkedIn Profile</span>
+                </a>
+            </div>
+            
+            <p class="text-gray-600 text-sm border-t border-gray-800 pt-8">
+                <span class="lang-en">© 2026 Ammar Alshalfi. All Rights Reserved.</span>
+                <span class="lang-ar">© 2026 عمار الشلفي. جميع الحقوق محفوظة.</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Fullscreen Project Modal -->
+    <div id="projectModal" class="fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-xl hidden-modal flex items-center justify-center p-4 lg:p-10 overflow-hidden">
+        <button onclick="closeModal()" class="absolute top-6 right-6 lg:top-10 lg:right-10 w-12 h-12 rounded-full glass flex items-center justify-center text-white hover:text-red-400 hover:bg-red-900/30 border border-white/10 hover:border-red-500 transition-all z-50 text-xl cursor-pointer shadow-lg">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        
+        <div class="max-w-7xl w-full mx-auto my-auto glass rounded-3xl overflow-hidden flex flex-col lg:flex-row relative border-blue-900/40 border shadow-[0_0_40px_rgba(59,130,246,0.15)] h-[90vh] lg:h-[85vh]">
+            
+            <!-- Details Side -->
+            <div class="w-full lg:w-1/3 p-8 lg:p-10 border-b lg:border-b-0 lg:border-r border-blue-900/40 flex flex-col justify-center bg-slate-900/80 text-start">
+                <span id="modalType" class="text-blue-400 text-xs tracking-[0.2em] font-bold uppercase mb-3 block"></span>
+                <h2 id="modalTitle" class="text-3xl lg:text-4xl font-bold font-syncopate mb-6 text-white leading-tight"></h2>
+                
+                <div class="space-y-4 mb-8">
+                    <div class="flex items-start gap-3">
+                        <i class="fa-solid fa-layer-group text-blue-500 mt-1"></i>
+                        <p id="modalDesc" class="text-gray-300 leading-relaxed text-sm lg:text-base"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gallery Side (Full Color Images) -->
+            <div class="w-full lg:w-2/3 h-full overflow-y-auto p-6 lg:p-10 custom-scrollbar bg-black/40">
+                <div id="modalGallery" class="grid grid-cols-1 gap-8">
+                    <!-- Images injected via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Project Data with Bilingual Support
+        const projects = [
+            {
+                id: 1,
+                titleEn: "Residential Tower", titleAr: "برج سكني وتجاري",
+                typeEn: "Commercial & Residential", typeAr: "تجاري وسكني",
+                descEn: "Abu Ahmed tower is a 10 Story Commercial and residential building, located in Sanaa. Acquiring the client needs, the building consisting one basement, 3 story commercial use, and 6 stories apartment. Features detailed material selection for the cladding.",
+                descAr: "برج أبو أحمد هو مبنى تجاري وسكني من 10 طوابق يقع في صنعاء. تلبية لاحتياجات العميل، يتكون المبنى من قبو، 3 طوابق تجارية، و 6 طوابق شقق سكنية. يشمل اختيار دقيق لمواد الإكساء الخارجي.",
+                thumb: "https://www.image2url.com/r2/default/images/1788955068517-f1aba89d-54c1-49bc-84cd-ea7af46a69dd.jpg",
+                images: [
+                    "https://www.image2url.com/r2/default/images/1788955068517-f1aba89d-54c1-49bc-84cd-ea7af46a69dd.jpg",
+                    "https://www.image2url.com/r2/default/images/1788955230955-d7ee4231-ecc5-4794-9dac-6c27e6071329.jpg",
+                    "https://www.image2url.com/r2/default/images/1788955262281-f4c658a0-8e9e-42c1-a91c-a4c0ac931266.jpg",
+                    "https://www.image2url.com/r2/default/images/1788955290906-9a6bd4b5-e625-4143-b6ac-a1dabf0272cf.png"
+                ]
+            },
+            {
+                id: 2,
+                titleEn: "Private Villa KSA", titleAr: "فيلا خاصة - السعودية",
+                typeEn: "Residential Architecture", typeAr: "عمارة سكنية",
+                descEn: "Complete architectural visualization and planning for a private residential villa in Saudi Arabia. Includes detailed ground floor and first floor furniture layouts.",
+                descAr: "تصور معماري وتخطيط كامل لفيلا سكنية خاصة في المملكة العربية السعودية. يشمل المخطط تفاصيل توزيع الأثاث للطابقين الأرضي والأول.",
+                thumb: "https://www.image2url.com/r2/default/images/1788955405809-56f61be6-e62f-4120-92e7-c8aebf361955.jpg",
+                images: [
+                    "https://www.image2url.com/r2/default/images/1788955405809-56f61be6-e62f-4120-92e7-c8aebf361955.jpg",
+                    "https://www.image2url.com/r2/default/images/1788955375749-64b9f93c-f6d1-4f9f-9b9e-cf59e5c6847a.jpg",
+                    "https://i.postimg.cc/jSg4sxXH/Picture6.png",
+                    "https://i.postimg.cc/rwnN8VJJ/Picture7.png"
+                ]
+            },
+            {
+                id: 3,
+                titleEn: "A.K Head Quarter", titleAr: "المقر الرئيسي A.K",
+                typeEn: "Office & Commercial", typeAr: "مكاتب وتجاري",
+                descEn: "9 Story Commercial and residential building, located in Sanaa. Acquiring the client needs, the building consisting one basement, 3 story commercial use, 4 stories apartment, and a Penthouse level.",
+                descAr: "مبنى تجاري وسكني من 9 طوابق في صنعاء. يتكون المبنى من قبو، 3 طوابق للاستخدام التجاري، 4 طوابق شقق سكنية، وطابق علوي (بنتهاوس).",
+                thumb: "https://i.postimg.cc/qgYq55s4/Picture9.jpg",
+                images: [
+                    "https://i.postimg.cc/qgYq55s4/Picture9.jpg",
+                    "https://i.postimg.cc/23JyKKQC/Picture10.png",
+                    "https://i.postimg.cc/bdMrBBxy/Picture11.png",
+                    "https://i.postimg.cc/14TXjjG9/Picture12.png",
+                    "https://i.postimg.cc/bdMrBBxw/Picture13.png",
+                    "https://i.postimg.cc/nM5rPP4L/Picture14.png",
+                    "https://i.postimg.cc/F1qzBBy4/Picture8.png"
+                ]
+            },
+            {
+                id: 4,
+                titleEn: "Private Villa Lebanon", titleAr: "فيلا خاصة - لبنان",
+                typeEn: "Topographical Design", typeAr: "تصميم طبوغرافي وجبلي",
+                descEn: "The design takes into account the topography of Lebanon mountain, as well as the client requirements to have two shops, one garage on the first level, one level apartment, and duplex.",
+                descAr: "يأخذ التصميم في الاعتبار الطبيعة الجغرافية الجبلية في لبنان، بالإضافة إلى متطلبات العميل بوجود متجرين، ومرآب في الطابق الأول، وطابق شقة سكنية، ودوبلكس.",
+                thumb: "https://i.postimg.cc/2VRmvRdF/Picture19.jpg",
+                images: [
+                    "https://i.postimg.cc/2VRmvRdF/Picture19.jpg",
+                    "https://i.postimg.cc/GHwrYwPG/Picture15.png",
+                    "https://i.postimg.cc/gnFdRFyV/Picture16.png",
+                    "https://i.postimg.cc/2VRmvRdd/Picture17.png",
+                    "https://i.postimg.cc/Mv2xR20y/Picture18.png",
+                    "https://i.postimg.cc/zVZ5WZwk/Picture20.jpg",
+                    "https://i.postimg.cc/hfWgxW81/Picture21.jpg"
+                ]
+            },
+            {
+                id: 5,
+                titleEn: "3-Story Hotel", titleAr: "فندق 3 طوابق",
+                typeEn: "Hospitality Design", typeAr: "تصميم فندقي",
+                descEn: "A 3-story hotel located in KSA consisting of 32 suites. The project includes extensive proposals for both classic and modern exterior styles.",
+                descAr: "فندق مكون من 3 طوابق يقع في المملكة العربية السعودية ويحتوي على 32 جناحاً. يشمل المشروع مقترحات شاملة لكل من الواجهات الكلاسيكية والحديثة.",
+                thumb: "https://i.postimg.cc/dLYP3Rv5/Picture22.jpg",
+                images: [
+                    "https://i.postimg.cc/dLYP3Rv5/Picture22.jpg",
+                    "https://i.postimg.cc/MvS2H0x4/Picture23.jpg",
+                    "https://i.postimg.cc/dLYP3Rvp/Picture24.jpg",
+                    "https://i.postimg.cc/RNB5h192/Picture25.png",
+                    "https://i.postimg.cc/7bywJrnN/Picture26.jpg",
+                    "https://i.postimg.cc/6TNt4xfL/Picture27.jpg",
+                    "https://i.postimg.cc/YjwMLBzz/Picture28.jpg",
+                    "https://i.postimg.cc/6TNt4xfM/Picture29.png"
+                ]
+            },
+            {
+                id: 6,
+                titleEn: "Historical City Public Park", titleAr: "الحديقة العامة التاريخية",
+                typeEn: "Urban & Landscape", typeAr: "تنسيق حدائق وتخطيط حضري",
+                descEn: "120,000 SQM is the first stage of a public garden at the capital of Yemen - Sanaa. The main design concept is conveying solutions between the different levels of the garden.",
+                descAr: "المرحلة الأولى من حديقة عامة بمساحة 120,000 متر مربع في صنعاء. الفكرة الرئيسية للتصميم هي إيجاد حلول انتقال سلسة بين المستويات المختلفة للحديقة.",
+                thumb: "https://i.postimg.cc/MTjC7rHk/Picture33.png",
+                images: [
+                    "https://i.postimg.cc/MTjC7rHk/Picture33.png",
+                    "https://i.postimg.cc/LY37ZwmD/Picture30.jpg",
+                    "https://i.postimg.cc/ygy5St7v/Picture31.jpg",
+                    "https://i.postimg.cc/KkDVgwmN/Picture32.jpg",
+                    "https://i.postimg.cc/VJ9j18gp/Picture34.jpg",
+                    "https://i.postimg.cc/NK81YcDz/Picture35.jpg",
+                    "https://i.postimg.cc/SnLWqhdH/Picture36.png"
+                ]
+            },
+            {
+                id: 7,
+                titleEn: "Multi Story Office", titleAr: "مبنى مكاتب متعدد الطوابق",
+                typeEn: "Interior & Fit-out", typeAr: "تصميم داخلي وتشطيبات",
+                descEn: "Company: Euroconsult. 9000 SQM 16-story building in KSA. Involved in design process from scratch to delivering IFC packages. Led a team handling stakeholder engagement and execution.",
+                descAr: "شركة يوروكونسلت. مبنى 16 طابق بمساحة 9000 متر مربع في السعودية. تم الإشراف على عملية التصميم من الصفر وتسليم مخططات IFC، وقيادة فريق لإدارة أصحاب المصلحة وعمليات التنفيذ.",
+                thumb: "https://i.postimg.cc/xqKj611t/Picture42.jpg",
+                images: [
+                    "https://i.postimg.cc/xqKj611t/Picture42.jpg",
+                    "https://i.postimg.cc/6Td6MppM/Picture43.jpg",
+                    "https://i.postimg.cc/hhqQDwJ5/Picture44.jpg",
+                    "https://i.postimg.cc/PNkvXcL9/Picture45.jpg",
+                    "https://i.postimg.cc/bdjSyMGK/Picture46.jpg"
+                ]
+            },
+            {
+                id: 8,
+                titleEn: "WDS Exhibition Center", titleAr: "مركز معارض الدفاع WDS",
+                typeEn: "Supervision & Execution", typeAr: "إشراف وتنفيذ",
+                descEn: "36,000 SQM area in KSA. As Consultant Engineer, oversaw works on site ensuring compliance with approved drawings. Responsibilities included reviewing materials. Project Value: SAR 850M.",
+                descAr: "مساحة 36,000 متر مربع في السعودية. كمهندس استشاري، تم الإشراف على الأعمال في الموقع وضمان الامتثال للمخططات المعتمدة. قيمة المشروع: 850 مليون ريال سعودي.",
+                thumb: "https://i.postimg.cc/B8HZRSC0/Picture47.jpg",
+                images: [
+                    "https://i.postimg.cc/B8HZRSC0/Picture47.jpg",
+                    "https://i.postimg.cc/jDGd8wyj/Whats-App-Image-2026-09-06-at-2-46-49-PM.jpg",
+                    "https://i.postimg.cc/f3mW1zvD/Whats-App-Image-2026-09-06-at-2-47-45-PM.jpg"
+                ]
+            },
+            {
+                id: 9,
+                titleEn: "Interior Office Fit-out", titleAr: "تجهيز مكاتب داخلية",
+                typeEn: "Corporate Interior", typeAr: "تصميم داخلي للشركات",
+                descEn: "600 SQM office space in KSA. As Contractor’s Engineer, managed the project on site from start to completion, overseeing construction, shop drawings, material selection, and MEP coordination.",
+                descAr: "مساحة مكتبية 600 متر مربع في السعودية. كمهندس المقاول، تم إدارة المشروع في الموقع من البداية حتى النهاية، والإشراف على البناء واختيار المواد والتنسيق الميكانيكي والكهربائي.",
+                thumb: "https://i.postimg.cc/WFSVPhqb/Picture48.png",
+                images: [
+                    "https://i.postimg.cc/WFSVPhqb/Picture48.png",
+                    "https://i.postimg.cc/WFSVPhqN/Picture49.png",
+                    "https://i.postimg.cc/wyFzd7R6/Picture50.png"
+                ]
+            }
+        ];
+
+        let currentLang = 'en';
+
+        // Toggle Language Function
+        function toggleLang() {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'en' ? 'ltr' : 'rtl';
+            
+            // Update Toggle Button Text
+            const langText = document.getElementById('langText');
+            langText.innerText = currentLang === 'en' ? 'عربي' : 'ENGLISH';
+            
+            // Re-render Projects to switch text
+            renderProjects();
+        }
+
+        // Render Projects Grid
+        function renderProjects() {
+            const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = '';
+            
+            projects.forEach((proj) => {
+                const title = currentLang === 'en' ? proj.titleEn : proj.titleAr;
+                const type = currentLang === 'en' ? proj.typeEn : proj.typeAr;
+                
+                const card = `
+                <div onclick="openModal(${proj.id})" class="project-card reveal relative overflow-hidden rounded-2xl aspect-[4/5] cursor-pointer glass bg-slate-900 border border-blue-900/40 hover:border-blue-500/60 transform hover:-translate-y-2 transition-all duration-500 shadow-lg hover:shadow-[0_15px_30px_rgba(59,130,246,0.2)]">
+                    <img src="${proj.thumb}" alt="${title}" onerror="this.src='https://placehold.co/600x800/0f172a/ffffff?text=Loading...'" class="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-transparent flex flex-col justify-end p-6 md:p-8 pointer-events-none text-start">
+                        <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                            <div class="w-8 h-1 bg-blue-500 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></div>
+                            <p class="text-blue-400 text-xs tracking-widest mb-1 font-bold uppercase drop-shadow-md">${type}</p>
+                            <h3 class="text-2xl font-bold font-syncopate text-white drop-shadow-lg">${title}</h3>
+                        </div>
+                    </div>
+                </div>
+                `;
+                grid.innerHTML += card;
+            });
+
+            // Native Intersection Observer for smooth reveal animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+            document.querySelectorAll('.reveal').forEach((el, index) => {
+                if(el.classList.contains('project-card')) {
+                    el.style.transitionDelay = `${(index % 3) * 0.15}s`;
+                }
+                observer.observe(el);
+            });
+        }
+
+        // Modal Logic
+        function openModal(id) {
+            const proj = projects.find(p => p.id === id);
+            if(!proj) return;
+
+            document.getElementById('modalTitle').textContent = currentLang === 'en' ? proj.titleEn : proj.titleAr;
+            document.getElementById('modalType').textContent = currentLang === 'en' ? proj.typeEn : proj.typeAr;
+            document.getElementById('modalDesc').textContent = currentLang === 'en' ? proj.descEn : proj.descAr;
+            
+            const gallery = document.getElementById('modalGallery');
+            
+            gallery.innerHTML = proj.images.map(img => `
+                <img src="${img}" 
+                     onerror="this.style.display='none'" 
+                     class="w-full rounded-xl border border-white/5 shadow-2xl object-cover bg-slate-900 min-h-[200px]">
+            `).join('');
+
+            const modal = document.getElementById('projectModal');
+            modal.classList.remove('hidden-modal');
+            document.body.style.overflow = 'hidden';
+            
+            const modalBox = modal.querySelector('.glass');
+            modalBox.style.transform = 'translateY(50px) scale(0.95)';
+            modalBox.style.opacity = '0';
+            
+            setTimeout(() => {
+                modalBox.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                modalBox.style.transform = 'translateY(0) scale(1)';
+                modalBox.style.opacity = '1';
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('projectModal');
+            const modalBox = modal.querySelector('.glass');
+            
+            modalBox.style.transform = 'translateY(20px) scale(0.95)';
+            modalBox.style.opacity = '0';
+            
+            setTimeout(() => {
+                modal.classList.add('hidden-modal');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('projectModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProjects();
+        });
+    </script>
+</body>
+</html>
